@@ -14,7 +14,7 @@ import com.PRS.db.UserRepo;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/Users")
 public class UserController {
 
 	@Autowired
@@ -27,10 +27,15 @@ public class UserController {
 	}
 
 	@GetMapping("{id}")
-	public Optional<User> getById(@PathVariable int id){
-		Optional<User> u = userRepo.findById(id);
-		return userRepo.findById(id);
+	public User getById(@PathVariable int id) {
+	    Optional<User> userOptional = userRepo.findById(id);
+	    if (userOptional.isPresent()) {
+	        return userOptional.get();
+	    } else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id);
+	    }
 	}
+
 
 	@PostMapping("")
 	public User addUser(@RequestBody User user) {
@@ -39,7 +44,7 @@ public class UserController {
 
 	@PostMapping("login")
 	public User login(@RequestBody LoginDTO login) {
-		Optional<User> userOptional = userRepo.findByUserName(login.getUserName());
+		Optional<User> userOptional = userRepo.findByUsername(login.getUsername());
 		if (userOptional.isPresent()) {
 			User user = userOptional.get();
 			if (user.getPassword().equals(login.getPassword()))

@@ -12,7 +12,7 @@ import com.PRS.db.VendorRepo;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/vendors")
+@RequestMapping("/api/Vendors")
 
 public class VendorController {
 
@@ -31,7 +31,7 @@ public class VendorController {
 		if (v.isPresent()) {
 			return v.get();
 		}
-		else {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id);
+		else {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor not found for id: " + id);
 		}}
 
 	@PostMapping("")
@@ -46,7 +46,7 @@ public class VendorController {
 			vendor.setId(id);
 			return vendorRepo.save(vendor);
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor not found for id: " + id);
 		}
 	}
 	@DeleteMapping("{id}")
@@ -55,7 +55,7 @@ public class VendorController {
 		if (v.isPresent()) {
 			vendorRepo.deleteById(id);
 		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + id);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vendor not found for id: " + id);
 		}
 	}
 }

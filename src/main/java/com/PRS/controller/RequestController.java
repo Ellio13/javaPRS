@@ -11,19 +11,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.PRS.db.LineItemRepo;
 import com.PRS.db.RequestRepo;
+import com.PRS.db.UserRepo;
 import com.PRS.model.RejectDTO;
 import com.PRS.model.Request;
 import com.PRS.model.RequestDTO;
+import com.PRS.model.User;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/requests")
+@RequestMapping("/api/Requests")
 
 public class RequestController {
 
 	@Autowired
 	private RequestRepo requestRepo;
+	@Autowired
+	private UserRepo userRepo;
+	@Autowired
+	private LineItemRepo lineItemRepo;
 
 	@GetMapping("/")
 	public List<Request> getAll() {
@@ -43,44 +50,55 @@ public class RequestController {
 
 	@GetMapping("list-review/{userId}")
 	public List<Request> getRequestsForReview(@PathVariable int userId) {
-		return requestRepo.findByStatusAndUserId("REVIEW", userId);
+		return requestRepo.findByStatusAndUser_Id("REVIEW", userId);
 	}
 
-
+	
 	@PostMapping("")
 	public Request addRequest(@RequestBody RequestDTO dto) {
-		Request request = convertToRequest(dto);
-		return requestRepo.save(request);
+	    Request request = convertToRequest(dto);
+	    return requestRepo.save(request);
 	}
 
-	@PutMapping("{id}")
-	public Request updateRequest(@PathVariable int id, @RequestBody Request updateRequest) {
-		Optional<Request> requestExists = requestRepo.findById(id);
-		if (requestExists.isPresent()) {
-			Request existingRequest = requestExists.get();
-			if ("APPROVED".equalsIgnoreCase(existingRequest.getStatus())) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Approved requests cannot be modified");
-			}
-			updateRequest.setId(id);
-			return requestRepo.save(updateRequest);
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found for id: " + id); 
-		}
-	}
+	@PutMapping("{id}")   // uses DTO to update request
+	public Request updateRequest(@PathVariable int id,
+	                             @RequestBody RequestDTO dto) {
+
+	    Optional<Request> requestExists = requestRepo.findById(id);
+	    if (!requestExists.isPresent()) {
+	        throw new ResponseStatusException(
+	                HttpStatus.NOT_FOUND,
+	                "Request not found for id: " + id);
+	    }
+	    Request existingRequest = requestExists.get();
+
+	    if ("APPROVED".equalsIgnoreCase(existingRequest.getStatus())) {
+	        throw new ResponseStatusException(
+	                HttpStatus.BAD_REQUEST,
+	                "Approved requests cannot be modified");
+	    }
+	    if ("REJECTED".equalsIgnoreCase(existingRequest.getStatus())) {
+	        throw new ResponseStatusException(
+	                HttpStatus.BAD_REQUEST,
+	                "Rejected requests cannot be modified");
+	    }
+
+	    existingRequest.setDescription(dto.getDescription());
+	    existingRequest.setJustification(dto.getJustification());
+	    existingRequest.setDateNeeded(dto.getDateNeeded());
+	    existingRequest.setDeliveryMode(dto.getDeliveryMode());
 
 
-	@PutMapping("approve/{id}")
-	public Request approveRequest(@PathVariable int id) {
-		Optional<Request> requestExists = requestRepo.findById(id);
-		if (requestExists.isPresent()) {
-			Request request = requestExists.get();
-			request.setStatus("APPROVED");
-			return requestRepo.save(request);
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found for id: " + id); 
-		}
+	    if (dto.getUserId() > 0) {
+	        Optional<User> userExists = userRepo.findById(dto.getUserId());
+	        if (!userExists.isPresent()) {
+	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found for id: " + dto.getUserId());
+	        }
+	        User user = userExists.get();       // gets full user object with fields populated
+	        existingRequest.setUser(user);      // add the user object to the request
+	    }
+
+	    return requestRepo.save(existingRequest);
 	}
 
 	@PutMapping("submit-review/{id}")
@@ -156,7 +174,9 @@ public class RequestController {
 	//takes values from DTO and puts into request fields of request object
 	private Request convertToRequest(RequestDTO dto) {
 		Request request = new Request();
-		request.setUserId(dto.getUserId());
+		User user = new User();
+		user.setId(dto.getUserId());  //sets user id from dto to user object
+		request.setUser(user);  //set user object to request
 		request.setDescription(dto.getDescription());
 		request.setJustification(dto.getJustification());
 		request.setDateNeeded(dto.getDateNeeded());

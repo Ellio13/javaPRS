@@ -1,7 +1,5 @@
 package com.PRS.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -9,21 +7,17 @@ public class LineItem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
-	private int id;
+	private int id; //primary key, internally generated
 
 	@ManyToOne
 	@JoinColumn(name = "RequestId")
-	@JsonIgnoreProperties({"lineItems"})
-	private Request request;
+	private Request request; //FK to Request, internally generated
 
 	@ManyToOne
 	@JoinColumn(name = "ProductId")
-	@JsonIgnoreProperties({"lineItems"})  //prevents circular reference issues
-	private Product product;
+	private Product product; //prevents circular reference issues
 
-	@Column(name = "Quantity")
-	private int quantity;
+	private int quantity; //number of items requested
 
 	// Getter and Setter for id
 	public int getId() {

@@ -9,5 +9,5 @@ import com.PRS.model.Request;
 
 public interface RequestRepo extends JpaRepository<Request, Integer> {
 	Request findTopByOrderByRequestNumberDesc();
-	List<Request> findByStatusAndUserId(String status, int userId);
+	List<Request> findByStatusAndUser_Id(String status, int userId);
 }

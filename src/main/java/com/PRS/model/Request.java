@@ -5,51 +5,34 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Request {
 
 	@Id
-	@Column(name = "ID")
-	public int id;  //primary key, SQL column "ID", calculated internally
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id; // primary key, SQL column "ID", calculated internally
 
-	@Column(name = "UserID")
-	public int userId; //foreign key to User, string length(20)
-
-	@Column(name = "RequestNumber")
-	public String requestNumber; //string length(20), calculated internally
-
-	@Column(name = "Description")
-	public String description; //string length(100)
-
-	@Column(name = "Justification")
-	public String justification; //string length(255)
-
-	@Column(name = "DateNeeded")
-	public LocalDate dateNeeded; //consoleutil has date formatting
-
-	@Column(name = "DeliveryMode")
-	public String deliveryMode; //Mail or pickup, string length(25)
-
-	@Column(name = "Status")
-	public String status; //calculated internally, string length(20), NEW, REVIEW, APPROVED, REJECTED
-
-	@Column(name = "Total")
-	public BigDecimal total;  //10 numbers, 2 decimal places, calculated internally
-
-	@Column(name = "SubmittedDate")
-	public LocalDate submittedDate; //calculated internally
-
-	@Column(name = "ReasonForRejection")
-	public String reasonForRejection;
-
+	@ManyToOne
+	@JoinColumn(name = "UserID")
+	private User user; // foreign key to User, string length(20)
+	private String requestNumber; // string length(20), calculated internally
+	private String description; // string length(100)
+	private String justification; // string length(255)
+	private LocalDate dateNeeded; // consoleutil has date formatting
+	private String deliveryMode; // Mail or pickup, string length(25)
+	private String status; // calculated internally, string length(20), NEW, REVIEW, APPROVED, REJECTED
+	private BigDecimal total; // 10 numbers, 2 decimal places, calculated internally
+	private LocalDate submittedDate; // calculated internally
+	private String reasonForRejection;
 
 	public Request() {
 		super();
-		// TODO Auto-generated constructor stub
-
-
 	}
 
 	public int getId() {
@@ -60,12 +43,12 @@ public class Request {
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(int i) {
-		this.userId = i;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getRequestNumber() {
@@ -142,12 +125,9 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return "Request [id=" + id + ", userId=" + userId + ", requestNumber=" + requestNumber + ", description="
-				+ description + ", justification=" + justification + ", dateNeeded=" + dateNeeded + ", deliveryMode="
-				+ deliveryMode + ", status=" + status + ", total=" + total + ", submittedDate=" + submittedDate
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+		return "Request [id=" + id + ", userId=" + (user != null ? user.getId() : "null") + ", requestNumber="
+				+ requestNumber + ", description=" + description + ", justification=" + justification + ", dateNeeded="
+				+ dateNeeded + ", deliveryMode=" + deliveryMode + ", status=" + status + ", total=" + total
+				+ ", submittedDate=" + submittedDate + ", reasonForRejection=" + reasonForRejection + "]";
 	}
-
-
 }

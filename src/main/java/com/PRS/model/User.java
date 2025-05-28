@@ -10,31 +10,17 @@ import jakarta.persistence.Id;
 public class User implements Comparable<User> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "UserName")
-	private String userName;
-
-	@Column(name = "Password")
+	// @Column(name = "UserName") these capitalization mappings aren't needed with
+	// MySQL, can be
+	private String username; // added later to switch to another database if needed
 	private String password;
-
-	@Column(name = "FirstName")
 	private String firstName;
-
-	@Column(name = "LastName")
 	private String lastName;
-
-	@Column(name = "PhoneNumber")
 	private String phoneNumber;
-
-	@Column(name = "Email")
 	private String email;
-
-	@Column(name = "Reviewer")
 	private boolean reviewer;
-
-	@Column(name = "Admin")
 	private boolean admin;
 
 	public int getId() {
@@ -48,18 +34,18 @@ public class User implements Comparable<User> {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		if (userName == null) {
-			throw new IllegalArgumentException("UserName cannot be empty");
+	public void setUsername(String username) {
+		if (username == null) {
+			throw new IllegalArgumentException("Username cannot be empty");
 		}
-		if (userName.length() > 20) {
-			throw new IllegalArgumentException("UserName cannot be longer than 20 characters");
+		if (username.length() > 20) {
+			throw new IllegalArgumentException("Username cannot be longer than 20 characters");
 		}
-		this.userName = userName;
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -150,20 +136,19 @@ public class User implements Comparable<User> {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", email=" + email + ", reviewer="
 				+ reviewer + ", admin=" + admin + "]";
 	}
 
 	@Override
 	public int compareTo(User user) {
-		return this.userName.compareTo(user.getUserName());
+		return this.username.compareTo(user.getUsername());
 	}
 
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 
 }

@@ -1,45 +1,34 @@
 package com.PRS.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+
 
 @Entity
 public class Vendor {
 
 	@Id
-	@Column(name = "ID")
-	public int id; //internally generated
+	private int id;            // primary key, SQL column "ID", internally generated
+	
+	private String code;       // string of 10 characters
+	private String name;       // string of 255 characters
+	private String address;    // string of 255 characters
+	private String city;       // string of 255 characters
+	private String state;      // string of 2 characters
+	private String zip;        // string of 5 characters
+	private String phoneNumber;// string of 12 characters
+	private String email;      // string of 100 characters
 
-	@Column(name = "Code")
-	public String code; //string of 10 characters
+	public Vendor() {
+		super();
+	}
 
-	@Column(name = "Name")
-	public String name; //string of 255 characters
-
-	@Column(name = "Address")
-	public String address; //string of 255 characters
-
-	@Column(name = "City")
-	public String city; //string of 255 characters
-
-	@Column(name = "State")
-	public String state; //string of 2 characters
-
-	@Column(name = "Zip")
-	public String zip; //string of 5 characters
-
-	@Column(name = "PhoneNumber")
-	public String phoneNumber; //string of 12 characters
-
-	@Column(name = "Email")
-	public String email; //string of 100 characters
 
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
-		this.id = id; 	
+		this.id = id;
 	}
 
 	public String getCode() {
@@ -100,11 +89,8 @@ public class Vendor {
 
 	@Override
 	public String toString() {
-		return "Vendor [id=" + id + ", code=" + code + ", name=" + name + ", address=" + address + ", city=" + city
-				+ ", state=" + state + ", zip=" + zip + ", phoneNumber=" + phoneNumber + ", email=" + email + "]";
+		return "Vendor [id=" + id + ", code=" + code + ", name=" + name
+				+ ", address=" + address + ", city=" + city + ", state=" + state
+				+ ", zip=" + zip + ", phoneNumber=" + phoneNumber + ", email=" + email + "]";
 	}
-	public Vendor() {
-		super();
-	}
-
-} 
+}
