@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ### Purchase Request System (PRS)
 
 The **PRS** application will allow company employees to:
@@ -26,8 +26,3 @@ The **PRS** application will allow company employees to:
 | **Front‑end** | Build **one** application using an advanced JavaScript framework (Angular + TypeScript) |
 
 ---
-
-=======
-# employeeVacationValidation
-Vacation Time Validation Checker
->>>>>>> e468312 (Initial commit)
