@@ -61,6 +61,10 @@ public class LineItemController {
 	@PostMapping("")
 	public LineItem addLineItem(@RequestBody LineItemDTO dto) {
 
+		if (dto.getRequestId() <= 0 || dto.getProductId() <= 0 || dto.getQuantity() <= 0) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request data");
+		}
+		
 		// Look up Request
 		Optional<Request> reqOptional = requestRepo.findById(dto.getRequestId());
 		if (!reqOptional.isPresent()) {
