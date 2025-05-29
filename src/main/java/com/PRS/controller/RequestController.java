@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.PRS.db.LineItemRepo;
 import com.PRS.db.RequestRepo;
 import com.PRS.db.UserRepo;
+import com.PRS.model.LineItem;
 import com.PRS.model.RejectDTO;
 import com.PRS.model.Request;
 import com.PRS.model.RequestDTO;
@@ -61,8 +62,7 @@ public class RequestController {
 	}
 
 	@PutMapping("{id}")   // uses DTO to update request
-	public Request updateRequest(@PathVariable int id,
-	                             @RequestBody RequestDTO dto) {
+	public Request updateRequest(@PathVariable int id, @RequestBody RequestDTO dto) {
 
 	    Optional<Request> requestExists = requestRepo.findById(id);
 	    if (!requestExists.isPresent()) {
@@ -140,6 +140,11 @@ public class RequestController {
 	public void deleteRequest(@PathVariable int id) {
 		Optional <Request> r = requestRepo.findById(id);
 		if (r.isPresent()) {
+			 List<LineItem> items = lineItemRepo.findByRequest_Id(id);
+			    if (!items.isEmpty()) {
+			        lineItemRepo.deleteAll(items);   //deletes line items connected to request
+			    }
+
 			requestRepo.deleteById(id);
 		}
 		else {

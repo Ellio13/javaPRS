@@ -11,4 +11,5 @@ public interface LineItemRepo extends JpaRepository<LineItem, Integer>{ //provid
  //finds line items by request ID
 
 	List<LineItem> findByRequest_Id(int requestId);
+	List<LineItem> findByProduct_Id(int productId);
 }

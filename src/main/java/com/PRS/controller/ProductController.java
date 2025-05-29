@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.PRS.db.LineItemRepo;
 import com.PRS.db.ProductRepo;
 import com.PRS.db.VendorRepo;
+import com.PRS.model.LineItem;
 import com.PRS.model.Product;
 import com.PRS.model.ProductDTO;
 import com.PRS.model.Vendor;
@@ -25,6 +27,9 @@ public class ProductController {
 
 	@Autowired
 	private VendorRepo vendorRepo;
+	
+	@Autowired
+	private LineItemRepo lineItemRepo;
 
 	@GetMapping("/")
 	public List<Product> getAll() {
@@ -73,10 +78,20 @@ public class ProductController {
 
 	@DeleteMapping("{id}")
 	public void deleteProduct(@PathVariable int id) {
-		if (productRepo.existsById(id)) {
-			productRepo.deleteById(id);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found for id: " + id);
-		}
+
+	    if (!productRepo.existsById(id)) {
+	        throw new ResponseStatusException(
+	                HttpStatus.NOT_FOUND,
+	                "Product not found for id: " + id);
+	    }
+
+	    List<LineItem> lines = lineItemRepo.findByProduct_Id(id);
+	    if (!lines.isEmpty()) {
+	        lineItemRepo.deleteAll(lines);
+	    }
+
+	    /* 3. Safe to delete parent product */
+	    productRepo.deleteById(id);
 	}
+
 }
