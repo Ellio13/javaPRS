@@ -3,7 +3,10 @@ package com.PRS.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
+
+//"import jakarta.persistence.Column;" - add if mapping to specific column 
+//names for other databases
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -15,11 +15,11 @@ public class LineItem {
 
 	@ManyToOne
 	@JoinColumn(name = "ProductId")
-	private Product product; //prevents circular reference issues
+	private Product product; //FK to Product, prevents circular reference issues
 
-	private int quantity; //number of items requested
+	private int quantity;
 
-	// Getter and Setter for id
+
 	public int getId() {
 		return id;
 	}
@@ -27,7 +27,6 @@ public class LineItem {
 		this.id = id;
 	}
 
-	// Getter and Setter for request
 	public Request getRequest() {
 		return request;
 	}
@@ -35,7 +34,6 @@ public class LineItem {
 		this.request = request;
 	}
 
-	// Getter and Setter for product
 	public Product getProduct() {
 		return product;
 	}
@@ -43,7 +41,6 @@ public class LineItem {
 		this.product = product;
 	}
 
-	// Getter and Setter for quantity
 	public int getQuantity() {
 		return quantity;
 	}

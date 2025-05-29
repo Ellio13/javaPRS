@@ -58,6 +58,8 @@ public class ProductController {
 		return productRepo.save(product);
 	}
 
+	
+	//edit product using ProductDTO
 	@PutMapping("{id}")
 	public Product updateProduct(@PathVariable int id, @RequestBody ProductDTO dto) {
 		Product existingProduct = productRepo.findById(id).orElseThrow(() ->
@@ -85,12 +87,14 @@ public class ProductController {
 	                "Product not found for id: " + id);
 	    }
 
-	    List<LineItem> lines = lineItemRepo.findByProduct_Id(id);
+	    
+	    //findByProductId in LineItemRepo
+	    List<LineItem> lines = lineItemRepo.findByProductId(id);
 	    if (!lines.isEmpty()) {
 	        lineItemRepo.deleteAll(lines);
 	    }
 
-	    /* 3. Safe to delete parent product */
+	    //delete the product
 	    productRepo.deleteById(id);
 	}
 

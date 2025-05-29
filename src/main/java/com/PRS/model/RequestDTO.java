@@ -1,28 +1,25 @@
 
 package com.PRS.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
+//DTO only passes UserId, Description, Justification, DateNeeded, DeliveryMode
 
 public class RequestDTO {
 
-	
-	private int userId; //foreign key to User, string length(20)
-	
-	private String description; //string length(100)
+	private int userId; // foreign key to User, string length(20)
 
-	private String justification; //string length(255)
+	private String description; // string length(100)
 
-	private LocalDate dateNeeded; //consoleutil has date formatting
+	private String justification; // string length(255)
 
-	private String deliveryMode; //Mail or pickup, string length(25)
+	private LocalDate dateNeeded; // consoleutil has date formatting
 
+	private String deliveryMode; // Mail or pickup, string length(25)
 
-	public RequestDTO() {}
+	public RequestDTO() {
+	}
 
 	public int getUserId() {
 		return userId;
@@ -31,8 +28,6 @@ public class RequestDTO {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
-	
 
 	public String getDescription() {
 		return description;
@@ -68,8 +63,8 @@ public class RequestDTO {
 
 	@Override
 	public String toString() {
-		return "Request [ userId= " + userId +  "description="+ description + ", justification=" + justification + ", dateNeeded=" + dateNeeded + ", deliveryMode="
-				+ deliveryMode + "]";
+		return "Request [ userId= " + userId + "description=" + description + ", justification=" + justification
+				+ ", dateNeeded=" + dateNeeded + ", deliveryMode=" + deliveryMode + "]";
 	}
-	
+
 }

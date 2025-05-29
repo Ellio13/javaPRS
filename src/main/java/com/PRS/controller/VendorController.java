@@ -17,12 +17,12 @@ import com.PRS.db.VendorRepo;
 public class VendorController {
 
 	@Autowired
-	private VendorRepo vendorRepo; // Correct type
+	private VendorRepo vendorRepo;
 
 
 	@GetMapping("/")
 	public List<Vendor> getAll() {
-		return vendorRepo.findAll(); // Now recognized
+		return vendorRepo.findAll(); 
 	}
 
 	@GetMapping("{id}")

@@ -1,5 +1,7 @@
 package com.PRS.model;
 
+//only passes username and password
+
 public class LoginDTO {
 	private String username;  
 	private String password;

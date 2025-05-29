@@ -3,7 +3,6 @@ package com.PRS.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +17,12 @@ import com.PRS.db.UserRepo;
 public class UserController {
 
 	@Autowired
-	private UserRepo userRepo; // Correct type
+	private UserRepo userRepo; // connects to UserRepo
 
 
 	@GetMapping("/")
 	public List<User> getAll() {
-		return userRepo.findAll(); // Now recognized
+		return userRepo.findAll();
 	}
 
 	@GetMapping("{id}")

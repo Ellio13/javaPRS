@@ -1,12 +1,14 @@
 package com.PRS.model;
 
+//only passes requestId, productId, and quantity
+
 public class LineItemDTO {
 
     private int requestId;
     private int productId;
     private int quantity;
 
-    // Getters and Setters
+ 
     public int getRequestId() {
         return requestId;
     }

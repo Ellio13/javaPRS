@@ -2,7 +2,7 @@ package com.PRS.model;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
+//import jakarta.persistence.Column;Uncomment to specify column properties
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -1,5 +1,8 @@
 package com.PRS.model;
 
+
+//"reason" is only field needed for RejectDTO
+
 public class RejectDTO {
 
 	private String reason;

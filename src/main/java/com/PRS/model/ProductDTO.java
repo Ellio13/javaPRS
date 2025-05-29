@@ -2,6 +2,8 @@ package com.PRS.model;
 
 import java.math.BigDecimal;
 
+// DTO only passes VendorId, PartNumber, Name, Price, Unit, PhotoPath
+
 public class ProductDTO {
 	private int vendorId;
 	private String partNumber;

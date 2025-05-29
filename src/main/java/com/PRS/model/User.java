@@ -1,6 +1,5 @@
 package com.PRS.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +11,9 @@ public class User implements Comparable<User> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	// @Column(name = "UserName") these capitalization mappings aren't needed with
-	// MySQL, can be
-	private String username; // added later to switch to another database if needed
+	// @Column(name = "UserName") these capitalization mappings aren't required for
+	// MySQL...can be added later to switch to another database if needed
+	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
@@ -148,7 +147,6 @@ public class User implements Comparable<User> {
 
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 }

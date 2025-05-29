@@ -49,9 +49,11 @@ public class RequestController {
 		}
 	}
 
+	
+	//function in repo to find requests by status and entered user id != userId in Request
 	@GetMapping("list-review/{userId}")
 	public List<Request> getRequestsForReview(@PathVariable int userId) {
-		return requestRepo.findByStatusAndUser_Id("REVIEW", userId);
+		return requestRepo.findByStatusAndUser_IdNot("REVIEW", userId);
 	}
 
 	
@@ -119,7 +121,40 @@ public class RequestController {
 		}
 	}
 
+	
+	//approve request
+	@PutMapping("approve/{id}")
+	public Request approveRequest(@PathVariable int id) {
+	    Request request = requestRepo.findById(id)
+	        .orElseThrow(() -> new ResponseStatusException(
+	            HttpStatus.NOT_FOUND, "Request not found for id: " + id));
 
+	    if ("APPROVED".equalsIgnoreCase(request.getStatus())) {
+	        throw new ResponseStatusException(
+	            HttpStatus.BAD_REQUEST, "Request already approved");
+	    }
+	    
+	    if ("REJECTED".equalsIgnoreCase(request.getStatus())) {
+	        throw new ResponseStatusException(
+	            HttpStatus.BAD_REQUEST, "Rejected requests cannot be approved");
+	    }
+	    
+	    if("NEW".equalsIgnoreCase(request.getStatus())) {
+	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request cannot be approved in current status: " + request.getStatus());
+	    }
+	    else if ("REVIEW".equalsIgnoreCase(request.getStatus())) {
+	        request.setStatus("APPROVED");
+	    }
+	    else {
+	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request cannot be approved in current status: " + request.getStatus());
+	    }
+
+	    request.setStatus("APPROVED");  
+	    return requestRepo.save(request);
+	}
+
+
+	//"reason for rejection" is the only required field when using RejectDTO
 	@PutMapping("reject/{id}")
 	public Request rejectRequest(@PathVariable int id, @RequestBody RejectDTO dto) {
 		Optional<Request> requestExists = requestRepo.findById(id);
@@ -153,6 +188,8 @@ public class RequestController {
 	}
 
 
+	// Generates a request number in the format RYYYYMMDDXXXX 
+	//where YYYYMMDD is the current date and XXXX is a sequence number that resets daily
 	private String generateRequestNumber() {
 		Request latestRequest = requestRepo.findTopByOrderByRequestNumberDesc(); //method in repo
 		LocalDate currentDate = LocalDate.now();
