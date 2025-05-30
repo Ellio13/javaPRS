@@ -115,6 +115,18 @@ public class RequestController {
 		}
 	}
 
+	@PutMapping("approve/{id}")
+	public Request approveRequest(@PathVariable int id) {
+		Optional<Request> requestExists = requestRepo.findById(id);
+		if (requestExists.isPresent()) {
+			Request request = requestExists.get();
+			request.setStatus("APPROVED");
+			return requestRepo.save(request);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found for id: " + id);
+		}
+	}
+	
 	// reject request
 	@PutMapping("reject/{id}")
 	public Request rejectRequest(@PathVariable int id, @RequestBody RejectDTO dto) {
